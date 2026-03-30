@@ -94,7 +94,9 @@ function renderProjectFeed() {
         .slice(0, 5)
         .map(
           (image, index) =>
-            `<img class="project-slide" src="${image}" alt="${project.name} image ${index + 1}" loading="lazy" />`
+            `<div class="project-slide-frame" style="--slide-bg: url('${image}')">
+              <img class="project-slide" src="${image}" alt="${project.name} image ${index + 1}" loading="lazy" />
+            </div>`
         )
         .join("");
       const dots = project.images
