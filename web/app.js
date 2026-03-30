@@ -201,9 +201,9 @@ async function runProjectSplashSequence() {
   showProjectSplashStep(3);
 
   if (projectNameSplash) projectNameSplash.classList.remove("is-visible");
-  if (projectCountVideoWrap) projectCountVideoWrap.style.display = "block";
+  if (projectCountVideoWrap) projectCountVideoWrap.classList.add("is-active");
   await playCountVideo(projectCountVideo);
-  if (projectCountVideoWrap) projectCountVideoWrap.style.display = "none";
+  if (projectCountVideoWrap) projectCountVideoWrap.classList.remove("is-active");
   if (projectNameSplash) projectNameSplash.classList.add("is-visible");
 
   await wait(INTRO_STEP_3_MS);
