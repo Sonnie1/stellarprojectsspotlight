@@ -473,6 +473,7 @@ body.menu-open {
 
 .feed-body {
   position: relative;
+  isolation: isolate;
 }
 
 .project-carousel {
@@ -534,6 +535,7 @@ body.menu-open {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  z-index: 5;
 }
 
 .project-action-btn {
