@@ -3,12 +3,28 @@ const spotlight = {
   tagline: "car rental marketplace",
   categoryLabel: "Project of the Month",
   monthLabel: "March 2026",
-  details: [
-    { key: "Category", value: "Mobility" },
-    { key: "Region", value: "East Africa" },
-    { key: "Focus", value: "Access and trust" },
-  ],
+  description:
+    "Ardena connects car owners and renters in one trusted marketplace with clear pricing and fast booking.",
 };
+
+const feedProjects = [
+  {
+    name: "Ardena",
+    tagline: "car rental marketplace",
+    badge: "Project Spotlight",
+    description:
+      "Ardena connects car owners and renters in one trusted marketplace with clear pricing and fast booking.",
+    images: Array(5).fill("./asstes/logo.png"),
+  },
+  {
+    name: "PayOrbit",
+    tagline: "borderless business payments",
+    badge: "Community Pick",
+    description:
+      "PayOrbit helps small teams receive and send payments faster across East Africa with transparent fees.",
+    images: Array(4).fill("./asstes/logo.png"),
+  },
+];
 
 const SPLASH_DURATION_MS = 2600;
 const INTRO_STEP_1_MS = 1700;
@@ -59,25 +75,96 @@ function updateCountdown() {
 function wireSpotlightContent() {
   const monthLabel = document.getElementById("introMonthLabel");
   const projectNameSplash = document.getElementById("projectNameSplash");
-  const projectNameHome = document.getElementById("projectNameHome");
-  const projectTaglineHome = document.getElementById("projectTaglineHome");
-
-  const detailCategoryValue = document.getElementById("detailCategoryValue");
-  const detailRegionValue = document.getElementById("detailRegionValue");
-  const detailFocusValue = document.getElementById("detailFocusValue");
-
-  const yearText = document.getElementById("yearText");
 
   if (monthLabel) monthLabel.textContent = spotlight.monthLabel;
   if (projectNameSplash) projectNameSplash.textContent = spotlight.name;
-  if (projectNameHome) projectNameHome.textContent = spotlight.name;
-  if (projectTaglineHome) projectTaglineHome.textContent = spotlight.tagline;
+}
 
-  if (detailCategoryValue) detailCategoryValue.textContent = spotlight.details[0]?.value ?? "";
-  if (detailRegionValue) detailRegionValue.textContent = spotlight.details[1]?.value ?? "";
-  if (detailFocusValue) detailFocusValue.textContent = spotlight.details[2]?.value ?? "";
+function renderProjectFeed() {
+  const feed = document.getElementById("projectFeed");
+  if (!feed) return;
 
-  if (yearText) yearText.textContent = `© ${new Date().getFullYear()}`;
+  feed.innerHTML = feedProjects
+    .map((project) => {
+      const slides = project.images
+        .slice(0, 5)
+        .map(
+          (image, index) =>
+            `<img class="project-slide" src="${image}" alt="${project.name} image ${index + 1}" loading="lazy" />`
+        )
+        .join("");
+      const dots = project.images
+        .slice(0, 5)
+        .map(
+          (_, index) =>
+            `<button class="carousel-dot ${index === 0 ? "is-active" : ""}" data-dot-index="${index}" type="button" aria-label="Go to image ${index + 1}"></button>`
+        )
+        .join("");
+
+      return `
+        <article class="feed-project" aria-label="${project.name}">
+          <header class="feed-header">
+            <div>
+              <h2 class="feed-title">${project.name}</h2>
+              <p class="feed-subtitle">${project.tagline}</p>
+            </div>
+            <span class="feed-badge">${project.badge}</span>
+          </header>
+
+          <div class="feed-body">
+            <div class="project-carousel" data-carousel aria-label="${project.name} image carousel">
+              ${slides}
+            </div>
+            <aside class="project-actions" aria-label="${project.name} actions">
+              <button class="project-action-btn" type="button" aria-label="Like">
+                <i class="fa-regular fa-heart" aria-hidden="true"></i>
+              </button>
+              <button class="project-action-btn" type="button" aria-label="Upvote">
+                <i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+              </button>
+              <button class="project-action-btn" type="button" aria-label="Share">
+                <i class="fa-solid fa-share-nodes" aria-hidden="true"></i>
+              </button>
+              <button class="project-action-btn action-donate" type="button" aria-label="Donate">
+                <i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i>
+              </button>
+            </aside>
+          </div>
+          <div class="carousel-dots" data-dots>${dots}</div>
+
+          <p class="feed-description">${project.description}</p>
+        </article>
+      `;
+    })
+    .join("");
+}
+
+function setupCarouselDots() {
+  const feed = document.getElementById("projectFeed");
+  if (!feed) return;
+
+  const cards = feed.querySelectorAll(".feed-project");
+  cards.forEach((card) => {
+    const carousel = card.querySelector("[data-carousel]");
+    const dots = Array.from(card.querySelectorAll(".carousel-dot"));
+    if (!carousel || dots.length === 0) return;
+
+    function setActiveDot(index) {
+      dots.forEach((dot, i) => dot.classList.toggle("is-active", i === index));
+    }
+
+    carousel.addEventListener("scroll", () => {
+      const slideWidth = carousel.clientWidth || 1;
+      const idx = Math.round(carousel.scrollLeft / slideWidth);
+      setActiveDot(Math.max(0, Math.min(idx, dots.length - 1)));
+    });
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener("click", () => {
+        carousel.scrollTo({ left: carousel.clientWidth * i, behavior: "smooth" });
+      });
+    });
+  });
 }
 
 function showProjectSplashStep(stepIndex) {
@@ -293,6 +380,8 @@ function init() {
   runSplashScreen();
   wireMobileMenu();
   wireSpotlightContent();
+  renderProjectFeed();
+  setupCarouselDots();
   const hasCountdown = Boolean(document.getElementById("cdDays"));
   if (hasCountdown) {
     updateCountdown();
