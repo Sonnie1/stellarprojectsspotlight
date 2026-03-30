@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stellar East Africa - Project Spotlight</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <section id="splashScreen" class="splash-screen" aria-label="Loading spotlight intro">
+      <div class="splash-inner">
+        <img class="splash-logo" src="./asstes/logo.png" alt="Stellar East Africa logo" />
+        <h1 class="splash-text">
+          <span class="splash-line">Stellar East Africa</span>
+          <span class="splash-line splash-line-accent">Project Spotlight</span>
+        </h1>
+      </div>
+    </section>
+
+    <div id="projectSplash" class="project-splash" aria-hidden="true">
+      <div class="project-splash-inner">
+        <section id="introMonth" class="intro-screen" aria-label="Month intro">
+          <div class="intro-block">
+            <p class="intro-subtitle">This month,</p>
+            <h2 class="intro-title" id="introMonthLabel">March 2026</h2>
+          </div>
+        </section>
+
+        <section id="introBuilders" class="intro-screen" aria-label="Builders intro">
+          <div class="intro-block">
+            <h2 class="intro-title">A team of dedicated builders have been working hard.</h2>
+            <p class="intro-paragraph">
+              We highlight projects that turn ideas into real-world impact across East Africa.
+            </p>
+          </div>
+        </section>
+
+        <section id="introProject" class="intro-screen" aria-label="Project spotlight intro">
+          <div class="intro-block">
+            <div class="intro-badge">Project Spotlight</div>
+            <h2 class="intro-title" id="projectNameSplash">Ardena</h2>
+            <p class="intro-paragraph" id="projectTaglineSplash">car rental marketplace</p>
+
+            <div class="celebrations" aria-hidden="true">
+              <div class="celebrations-title">Celebrations</div>
+              <div class="confetti">
+                <span class="confetti-dot" style="--x:-80; --d:0ms; --c:var(--accent)"></span>
+                <span class="confetti-dot" style="--x:-45; --d:140ms; --c:var(--gold)"></span>
+                <span class="confetti-dot" style="--x:-20; --d:260ms; --c:var(--accent)"></span>
+                <span class="confetti-dot" style="--x:10; --d:120ms; --c:var(--gold)"></span>
+                <span class="confetti-dot" style="--x:35; --d:240ms; --c:var(--accent)"></span>
+                <span class="confetti-dot" style="--x:70; --d:90ms; --c:var(--gold)"></span>
+                <span class="confetti-dot" style="--x:-65; --d:320ms; --c:var(--accent)"></span>
+                <span class="confetti-dot" style="--x:55; --d:380ms; --c:var(--accent)"></span>
+                <span class="confetti-dot" style="--x:0; --d:220ms; --c:var(--gold)"></span>
+                <span class="confetti-dot" style="--x:-10; --d:410ms; --c:var(--accent)"></span>
+                <span class="confetti-dot" style="--x:25; --d:460ms; --c:var(--gold)"></span>
+                <span class="confetti-dot" style="--x:-35; --d:520ms; --c:var(--accent)"></span>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <div id="siteContent" class="site-content" aria-hidden="true">
+      <a class="skip-link" href="#spotlight">Skip to content</a>
+
+      <header class="site-header">
+        <div class="container header-inner">
+          <button
+            id="menuToggle"
+            class="menu-toggle"
+            type="button"
+            aria-label="Open menu"
+            aria-expanded="false"
+            aria-controls="mobileMenu"
+          >
+            <span class="menu-bar"></span>
+            <span class="menu-bar"></span>
+            <span class="menu-bar"></span>
+          </button>
+        </div>
+        <nav id="mobileMenu" class="mobile-menu" aria-label="Mobile navigation">
+          <a class="mobile-menu-link" href="#spotlight">Home</a>
+          <span class="mobile-menu-link is-disabled" aria-disabled="true">Hall of Fame (Coming soon)</span>
+        </nav>
+        <div id="menuBackdrop" class="menu-backdrop" aria-hidden="true"></div>
+      </header>
+
+      <main>
+        <section id="spotlight" class="home" aria-label="Project Spotlight">
+          <div class="container home-inner">
+            <div class="project-card">
+              <div class="project-media" role="img" aria-label="Project picture">
+                <svg
+                  class="car-illustration"
+                  viewBox="0 0 520 220"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <rect x="0" y="0" width="520" height="220" fill="#ffffff" />
+                  <path
+                    d="M70 135 L145 85 Q160 75 180 75 L310 75 Q330 75 345 85 L420 135"
+                    fill="none"
+                    stroke="#000000"
+                    stroke-width="10"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M110 135 H410 L385 85 H155 L110 135 Z"
+                    fill="none"
+                    stroke="var(--accent)"
+                    stroke-width="8"
+                    stroke-linejoin="round"
+                  />
+                  <circle cx="155" cy="155" r="28" fill="#ffffff" stroke="#000000" stroke-width="8" />
+                  <circle cx="380" cy="155" r="28" fill="#ffffff" stroke="#000000" stroke-width="8" />
+                  <rect x="230" y="60" width="60" height="28" fill="var(--gold)" stroke="#000000" stroke-width="6" />
+                  <path
+                    d="M205 120 H315"
+                    fill="none"
+                    stroke="#000000"
+                    stroke-width="8"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+
+              <div class="project-copy">
+                <div class="project-badge">Project Spotlight</div>
+                <h1 class="project-title" id="projectNameHome">Ardena</h1>
+                <p class="project-tagline" id="projectTaglineHome">car rental marketplace</p>
+
+                <div class="project-details" aria-label="Project details">
+                  <div class="detail-row">
+                    <div class="detail-key">Category</div>
+                    <div class="detail-value" id="detailCategoryValue">Mobility</div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="detail-key">Region</div>
+                    <div class="detail-value" id="detailRegionValue">East Africa</div>
+                  </div>
+                  <div class="detail-row">
+                    <div class="detail-key">Focus</div>
+                    <div class="detail-value" id="detailFocusValue">Access and trust</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <span class="footer-text">Stellar East Africa - Monthly Project Spotlight</span>
+          <span class="footer-text" id="yearText"></span>
+        </div>
+      </footer>
+    </div>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
+
