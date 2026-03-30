@@ -255,6 +255,7 @@ function wireMobileMenu() {
     toggle.classList.add("is-open");
     menu.classList.add("is-open");
     backdrop.classList.add("is-open");
+    document.body.classList.add("menu-open");
     toggle.setAttribute("aria-expanded", "true");
     toggle.setAttribute("aria-label", "Close menu");
   }
@@ -263,6 +264,7 @@ function wireMobileMenu() {
     toggle.classList.remove("is-open");
     menu.classList.remove("is-open");
     backdrop.classList.remove("is-open");
+    document.body.classList.remove("menu-open");
     toggle.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-label", "Open menu");
   }

@@ -27,6 +27,11 @@ body {
   line-height: 1.4;
 }
 
+body.menu-open {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
 .skip-link {
   position: absolute;
   top: -60px;
@@ -176,16 +181,17 @@ body {
   position: fixed;
   top: 0;
   right: 0;
-  height: 100dvh;
+  height: 100svh;
+  min-height: 100vh;
   width: min(300px, 52vw);
   transform: translateX(110%);
   background: #ffffff;
   border-left: 1px solid #000000;
   border-radius: 0;
-  padding: 20px 14px 16px;
+  padding: 20px 14px calc(16px + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 12px;
   opacity: 0;
   visibility: hidden;
@@ -213,15 +219,7 @@ body {
 .mobile-menu-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-}
-
-.mobile-menu-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  justify-content: flex-end;
 }
 
 .menu-close-btn {
@@ -254,6 +252,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
+  margin-top: auto;
 }
 
 .menu-action-btn {
