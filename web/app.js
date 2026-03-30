@@ -1,19 +1,20 @@
 const spotlight = {
-  title: "Project Spotlight",
-  subtitle:
-    "A monthly feature highlighting the most impactful work across Stellar East Africa.",
+  name: "Ardena",
+  tagline: "car rental marketplace",
   categoryLabel: "Project of the Month",
-  featuredMeta: "Monthly Spotlight",
-  description:
-    "This project improves lives by turning ideas into usable solutions for communities.",
-  problemText:
-    "Many builders struggle to turn promising ideas into sustainable products that reach the right audience.",
-  solutionText:
-    "A structured approach that helps teams ship, measure impact, and iterate with clarity.",
-  liveDemoUrl: "#",
+  monthLabel: "March 2026",
+  details: [
+    { key: "Category", value: "Mobility" },
+    { key: "Region", value: "East Africa" },
+    { key: "Focus", value: "Access and trust" },
+  ],
 };
 
 const SPLASH_DURATION_MS = 2600;
+const INTRO_STEP_1_MS = 1700;
+const INTRO_STEP_2_MS = 1900;
+const INTRO_STEP_3_MS = 2200;
+const INTRO_TOTAL_MS = INTRO_STEP_1_MS + INTRO_STEP_2_MS + INTRO_STEP_3_MS;
 
 function pad2(n) {
   return String(n).padStart(2, "0");
@@ -57,41 +58,77 @@ function updateCountdown() {
 }
 
 function wireSpotlightContent() {
-  const title = document.getElementById("projectTitle");
-  const subtitle = document.getElementById("projectSubtitle");
-  const categoryPill = document.getElementById("projectCategoryPill");
-  const liveDemoButton = document.getElementById("liveDemoButton");
-  const featuredMeta = document.getElementById("projectFeaturedMeta");
-  const titleCard = document.getElementById("projectTitleCard");
-  const desc = document.getElementById("projectDescription");
-  const problemText = document.getElementById("problemText");
-  const solutionText = document.getElementById("solutionText");
+  const monthLabel = document.getElementById("introMonthLabel");
+  const projectNameSplash = document.getElementById("projectNameSplash");
+  const projectTaglineSplash = document.getElementById("projectTaglineSplash");
+  const projectNameHome = document.getElementById("projectNameHome");
+  const projectTaglineHome = document.getElementById("projectTaglineHome");
+
+  const detailCategoryValue = document.getElementById("detailCategoryValue");
+  const detailRegionValue = document.getElementById("detailRegionValue");
+  const detailFocusValue = document.getElementById("detailFocusValue");
+
   const yearText = document.getElementById("yearText");
 
-  if (title) title.textContent = spotlight.title;
-  if (subtitle) subtitle.textContent = spotlight.subtitle;
-  if (categoryPill) categoryPill.textContent = spotlight.categoryLabel;
-  if (liveDemoButton) liveDemoButton.href = spotlight.liveDemoUrl;
-  if (featuredMeta) featuredMeta.textContent = spotlight.featuredMeta;
-  if (titleCard) titleCard.textContent = spotlight.title;
-  if (desc) desc.textContent = spotlight.description;
-  if (problemText) problemText.textContent = spotlight.problemText;
-  if (solutionText) solutionText.textContent = spotlight.solutionText;
+  if (monthLabel) monthLabel.textContent = spotlight.monthLabel;
+  if (projectNameSplash) projectNameSplash.textContent = spotlight.name;
+  if (projectTaglineSplash) projectTaglineSplash.textContent = spotlight.tagline;
+  if (projectNameHome) projectNameHome.textContent = spotlight.name;
+  if (projectTaglineHome) projectTaglineHome.textContent = spotlight.tagline;
+
+  if (detailCategoryValue) detailCategoryValue.textContent = spotlight.details[0]?.value ?? "";
+  if (detailRegionValue) detailRegionValue.textContent = spotlight.details[1]?.value ?? "";
+  if (detailFocusValue) detailFocusValue.textContent = spotlight.details[2]?.value ?? "";
+
   if (yearText) yearText.textContent = `© ${new Date().getFullYear()}`;
+}
+
+function showProjectSplashStep(stepIndex) {
+  const projectSplash = document.getElementById("projectSplash");
+  if (!projectSplash) return;
+
+  const screens = Array.from(projectSplash.querySelectorAll(".intro-screen"));
+  screens.forEach((screen, i) => {
+    screen.classList.toggle("is-active", i === stepIndex);
+  });
+}
+
+function runProjectSplashSequence() {
+  const projectSplash = document.getElementById("projectSplash");
+  const siteContent = document.getElementById("siteContent");
+  if (!projectSplash || !siteContent) return;
+
+  projectSplash.classList.add("is-active");
+  projectSplash.setAttribute("aria-hidden", "false");
+
+  showProjectSplashStep(0);
+  window.setTimeout(() => showProjectSplashStep(1), INTRO_STEP_1_MS);
+  window.setTimeout(
+    () => showProjectSplashStep(2),
+    INTRO_STEP_1_MS + INTRO_STEP_2_MS
+  );
+
+  window.setTimeout(() => {
+    projectSplash.classList.remove("is-active");
+    projectSplash.setAttribute("aria-hidden", "true");
+
+    siteContent.classList.add("is-ready");
+    siteContent.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "auto";
+  }, INTRO_TOTAL_MS);
 }
 
 function runSplashScreen() {
   const splash = document.getElementById("splashScreen");
   const siteContent = document.getElementById("siteContent");
-  if (!splash || !siteContent) return;
+  const projectSplash = document.getElementById("projectSplash");
+  if (!splash || !siteContent || !projectSplash) return;
 
   document.body.style.overflow = "hidden";
 
   window.setTimeout(() => {
     splash.classList.add("is-hidden");
-    siteContent.classList.add("is-ready");
-    siteContent.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "auto";
+    runProjectSplashSequence();
   }, SPLASH_DURATION_MS);
 }
 
