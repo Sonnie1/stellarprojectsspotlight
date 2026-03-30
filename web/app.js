@@ -12,9 +12,8 @@ const spotlight = {
 
 const SPLASH_DURATION_MS = 2600;
 const INTRO_STEP_1_MS = 1700;
-const INTRO_STEP_2_MS = 1900;
+const INTRO_STEP_2_MS = 1100;
 const INTRO_STEP_3_MS = 2200;
-const INTRO_TOTAL_MS = INTRO_STEP_1_MS + INTRO_STEP_2_MS + INTRO_STEP_3_MS;
 
 function pad2(n) {
   return String(n).padStart(2, "0");
@@ -60,7 +59,6 @@ function updateCountdown() {
 function wireSpotlightContent() {
   const monthLabel = document.getElementById("introMonthLabel");
   const projectNameSplash = document.getElementById("projectNameSplash");
-  const projectTaglineSplash = document.getElementById("projectTaglineSplash");
   const projectNameHome = document.getElementById("projectNameHome");
   const projectTaglineHome = document.getElementById("projectTaglineHome");
 
@@ -72,7 +70,6 @@ function wireSpotlightContent() {
 
   if (monthLabel) monthLabel.textContent = spotlight.monthLabel;
   if (projectNameSplash) projectNameSplash.textContent = spotlight.name;
-  if (projectTaglineSplash) projectTaglineSplash.textContent = spotlight.tagline;
   if (projectNameHome) projectNameHome.textContent = spotlight.name;
   if (projectTaglineHome) projectTaglineHome.textContent = spotlight.tagline;
 
@@ -91,9 +88,35 @@ function showProjectSplashStep(stepIndex) {
   screens.forEach((screen, i) => {
     screen.classList.toggle("is-active", i === stepIndex);
   });
+
+  const confettiOverlay = document.getElementById("confettiOverlay");
+  if (confettiOverlay) {
+    confettiOverlay.classList.toggle("is-active", stepIndex === 3);
+  }
 }
 
-function runProjectSplashSequence() {
+function wait(ms) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+function typeText(target, text, speedMs = 40) {
+  if (!target) return Promise.resolve();
+  target.textContent = "";
+
+  return new Promise((resolve) => {
+    let i = 0;
+    const timer = window.setInterval(() => {
+      target.textContent += text.charAt(i);
+      i += 1;
+      if (i >= text.length) {
+        window.clearInterval(timer);
+        resolve();
+      }
+    }, speedMs);
+  });
+}
+
+async function runProjectSplashSequence() {
   const projectSplash = document.getElementById("projectSplash");
   const siteContent = document.getElementById("siteContent");
   if (!projectSplash || !siteContent) return;
@@ -101,21 +124,74 @@ function runProjectSplashSequence() {
   projectSplash.classList.add("is-active");
   projectSplash.setAttribute("aria-hidden", "false");
 
-  showProjectSplashStep(0);
-  window.setTimeout(() => showProjectSplashStep(1), INTRO_STEP_1_MS);
-  window.setTimeout(
-    () => showProjectSplashStep(2),
-    INTRO_STEP_1_MS + INTRO_STEP_2_MS
-  );
+  const buildersLine1 = document.getElementById("buildersLine1");
+  const buildersLine2 = document.getElementById("buildersLine2");
+  const bridgeLine1 = document.getElementById("bridgeLine1");
+  const bridgeLine2 = document.getElementById("bridgeLine2");
+  const projectCountdown = document.getElementById("projectCountdown");
+  const projectNameSplash = document.getElementById("projectNameSplash");
 
-  window.setTimeout(() => {
+  showProjectSplashStep(0);
+  await wait(INTRO_STEP_1_MS);
+
+  showProjectSplashStep(1);
+
+  // Typed statement: one line at a time.
+  const line1Text = "A team of dedicated builders";
+  const line2Text = "have been working hard.";
+  const line3Text = "Now meet this month's";
+  const line4Text = "spotlight project.";
+
+  if (buildersLine1) buildersLine1.classList.add("is-typing");
+  if (buildersLine2) buildersLine2.classList.remove("is-typing");
+  if (bridgeLine1) bridgeLine1.classList.remove("is-typing");
+  if (bridgeLine2) bridgeLine2.classList.remove("is-typing");
+
+  await typeText(buildersLine1, line1Text, 42);
+  if (buildersLine1) buildersLine1.classList.remove("is-typing");
+  await wait(220);
+  if (buildersLine2) buildersLine2.classList.add("is-typing");
+
+  await typeText(buildersLine2, line2Text, 42);
+  if (buildersLine2) buildersLine2.classList.remove("is-typing");
+  await wait(220);
+  await wait(INTRO_STEP_2_MS);
+
+  showProjectSplashStep(2);
+  if (bridgeLine1) bridgeLine1.classList.add("is-typing");
+  await typeText(bridgeLine1, line3Text, 38);
+  if (bridgeLine1) bridgeLine1.classList.remove("is-typing");
+  await wait(220);
+  if (bridgeLine2) bridgeLine2.classList.add("is-typing");
+  await typeText(bridgeLine2, line4Text, 38);
+  if (bridgeLine2) bridgeLine2.classList.remove("is-typing");
+  await wait(500);
+
+  showProjectSplashStep(3);
+
+  if (projectNameSplash) projectNameSplash.classList.remove("is-visible");
+  if (projectCountdown) {
+    projectCountdown.textContent = "3..";
+    projectCountdown.style.display = "block";
+  }
+
+  for (let i = 3; i >= 1; i -= 1) {
+    if (projectCountdown) projectCountdown.textContent = `${i}..`;
+    await wait(420);
+  }
+
+  if (projectCountdown) projectCountdown.style.display = "none";
+  if (projectNameSplash) projectNameSplash.classList.add("is-visible");
+
+  await wait(INTRO_STEP_3_MS);
+
     projectSplash.classList.remove("is-active");
     projectSplash.setAttribute("aria-hidden", "true");
 
     siteContent.classList.add("is-ready");
     siteContent.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "auto";
-  }, INTRO_TOTAL_MS);
+
 }
 
 function runSplashScreen() {
@@ -176,8 +252,11 @@ function init() {
   runSplashScreen();
   wireMobileMenu();
   wireSpotlightContent();
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+  const hasCountdown = Boolean(document.getElementById("cdDays"));
+  if (hasCountdown) {
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  }
 }
 
 // Load after DOM is ready.
