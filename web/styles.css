@@ -112,14 +112,12 @@ body.menu-open {
 
 .site-content {
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 420ms ease, transform 420ms ease;
+  transition: opacity 420ms ease;
   pointer-events: none;
 }
 
 .site-content.is-ready {
   opacity: 1;
-  transform: translateY(0);
   pointer-events: auto;
 }
 
