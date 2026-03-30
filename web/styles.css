@@ -497,10 +497,11 @@ body.menu-open {
   scroll-snap-align: start;
   min-height: calc(100svh - 250px);
   max-height: calc(100svh - 250px);
-  object-fit: cover;
+  object-fit: contain;
+  object-position: center center;
   width: 100%;
   display: block;
-  background: #f8f8f8;
+  background: #111111;
 }
 
 .project-actions {
