@@ -14,7 +14,11 @@ const feedProjects = [
     badge: "Project Spotlight",
     description:
       "Ardena connects car owners and renters in one trusted marketplace with clear pricing and fast booking.",
-    images: Array(5).fill("./asstes/logo.png"),
+    images: [
+      "./asstes/ardena.jpg",
+      "./asstes/ardena1.jpg",
+      "./asstes/ardena2.jpg",
+    ],
   },
   {
     name: "PayOrbit",
