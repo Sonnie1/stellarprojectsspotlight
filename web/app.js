@@ -12,7 +12,7 @@ const spotlight = {
 
 const SPLASH_DURATION_MS = 2600;
 const INTRO_STEP_1_MS = 1700;
-const INTRO_STEP_2_MS = 1100;
+const INTRO_STEP_2_MS = 800;
 const INTRO_STEP_3_MS = 2200;
 
 function pad2(n) {
@@ -91,7 +91,8 @@ function showProjectSplashStep(stepIndex) {
 
   const confettiOverlay = document.getElementById("confettiOverlay");
   if (confettiOverlay) {
-    confettiOverlay.classList.toggle("is-active", stepIndex === 3);
+    confettiOverlay.classList.toggle("is-active", stepIndex === 4);
+    if (stepIndex !== 4) confettiOverlay.classList.remove("is-burst");
   }
 }
 
@@ -114,6 +115,18 @@ function typeText(target, text, speedMs = 40) {
       }
     }, speedMs);
   });
+}
+
+function accentWord(target, word) {
+  if (!target || !word || !target.textContent) return;
+  const text = target.textContent;
+  const idx = text.toLowerCase().indexOf(word.toLowerCase());
+  if (idx < 0) return;
+
+  const before = text.slice(0, idx);
+  const match = text.slice(idx, idx + word.length);
+  const after = text.slice(idx + word.length);
+  target.innerHTML = `${before}<span class="intro-accent">${match}</span>${after}`;
 }
 
 function playCountVideo(videoElement) {
@@ -156,11 +169,11 @@ async function runProjectSplashSequence() {
 
   const buildersLine1 = document.getElementById("buildersLine1");
   const buildersLine2 = document.getElementById("buildersLine2");
-  const bridgeLine1 = document.getElementById("bridgeLine1");
-  const bridgeLine2 = document.getElementById("bridgeLine2");
+  const leadinLine1 = document.getElementById("leadinLine1");
   const projectCountVideoWrap = document.getElementById("projectCountVideoWrap");
   const projectCountVideo = document.getElementById("projectCountVideo");
   const projectNameSplash = document.getElementById("projectNameSplash");
+  const confettiOverlay = document.getElementById("confettiOverlay");
 
   showProjectSplashStep(0);
   await wait(INTRO_STEP_1_MS);
@@ -170,41 +183,39 @@ async function runProjectSplashSequence() {
   // Typed statement: one line at a time.
   const line1Text = "A team of dedicated builders";
   const line2Text = "have been working hard.";
-  const line3Text = "Now meet this month's";
-  const line4Text = "spotlight project.";
+  const line3Text = "Now meet this month's spotlight project.";
 
   if (buildersLine1) buildersLine1.classList.add("is-typing");
   if (buildersLine2) buildersLine2.classList.remove("is-typing");
-  if (bridgeLine1) bridgeLine1.classList.remove("is-typing");
-  if (bridgeLine2) bridgeLine2.classList.remove("is-typing");
+  if (leadinLine1) leadinLine1.classList.remove("is-typing");
 
   await typeText(buildersLine1, line1Text, 42);
   if (buildersLine1) buildersLine1.classList.remove("is-typing");
-  await wait(220);
-  if (buildersLine2) buildersLine2.classList.add("is-typing");
-
-  await typeText(buildersLine2, line2Text, 42);
-  if (buildersLine2) buildersLine2.classList.remove("is-typing");
-  await wait(220);
+  accentWord(buildersLine1, "dedicated");
   await wait(INTRO_STEP_2_MS);
 
   showProjectSplashStep(2);
-  if (bridgeLine1) bridgeLine1.classList.add("is-typing");
-  await typeText(bridgeLine1, line3Text, 38);
-  if (bridgeLine1) bridgeLine1.classList.remove("is-typing");
-  await wait(220);
-  if (bridgeLine2) bridgeLine2.classList.add("is-typing");
-  await typeText(bridgeLine2, line4Text, 38);
-  if (bridgeLine2) bridgeLine2.classList.remove("is-typing");
-  await wait(500);
+  if (buildersLine2) buildersLine2.classList.add("is-typing");
+  await typeText(buildersLine2, line2Text, 42);
+  if (buildersLine2) buildersLine2.classList.remove("is-typing");
+  accentWord(buildersLine2, "working hard");
+  await wait(INTRO_STEP_2_MS);
 
   showProjectSplashStep(3);
+  if (leadinLine1) leadinLine1.classList.add("is-typing");
+  await typeText(leadinLine1, line3Text, 36);
+  if (leadinLine1) leadinLine1.classList.remove("is-typing");
+  accentWord(leadinLine1, "spotlight project");
+  await wait(500);
+
+  showProjectSplashStep(4);
 
   if (projectNameSplash) projectNameSplash.classList.remove("is-visible");
   if (projectCountVideoWrap) projectCountVideoWrap.classList.add("is-active");
   await playCountVideo(projectCountVideo);
   if (projectCountVideoWrap) projectCountVideoWrap.classList.remove("is-active");
   if (projectNameSplash) projectNameSplash.classList.add("is-visible");
+  if (confettiOverlay) confettiOverlay.classList.add("is-burst");
 
   await wait(INTRO_STEP_3_MS);
 
@@ -233,11 +244,12 @@ function runSplashScreen() {
 
 function wireMobileMenu() {
   const toggle = document.getElementById("menuToggle");
+  const closeBtn = document.getElementById("menuCloseBtn");
   const menu = document.getElementById("mobileMenu");
   const backdrop = document.getElementById("menuBackdrop");
   if (!toggle || !menu || !backdrop) return;
 
-  const links = menu.querySelectorAll(".mobile-menu-link");
+  const links = menu.querySelectorAll("a");
 
   function openMenu() {
     toggle.classList.add("is-open");
@@ -255,6 +267,9 @@ function wireMobileMenu() {
     toggle.setAttribute("aria-label", "Open menu");
   }
 
+  // Ensure menu is always hidden on first paint.
+  closeMenu();
+
   toggle.addEventListener("click", () => {
     if (menu.classList.contains("is-open")) {
       closeMenu();
@@ -264,6 +279,7 @@ function wireMobileMenu() {
   });
 
   backdrop.addEventListener("click", closeMenu);
+  if (closeBtn) closeBtn.addEventListener("click", closeMenu);
   links.forEach((link) => link.addEventListener("click", closeMenu));
 
   document.addEventListener("keydown", (event) => {

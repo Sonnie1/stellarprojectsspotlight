@@ -27,7 +27,7 @@
       <div class="project-splash-inner">
         <section id="introMonth" class="intro-screen" aria-label="Month intro">
           <div class="intro-block">
-            <p class="intro-subtitle">This month,</p>
+            <p class="intro-subtitle intro-teal">This month,</p>
             <h2 class="intro-title" id="introMonthLabel">March 2026</h2>
           </div>
         </section>
@@ -35,14 +35,18 @@
         <section id="introBuilders" class="intro-screen" aria-label="Builders intro">
           <div class="intro-block">
             <h2 class="typing-line intro-title" aria-hidden="true" id="buildersLine1"></h2>
-            <h2 class="typing-line intro-title" aria-hidden="true" id="buildersLine2"></h2>
           </div>
         </section>
 
         <section id="introBridge" class="intro-screen" aria-label="Bridge intro">
           <div class="intro-block">
-            <h2 class="typing-line intro-title" aria-hidden="true" id="bridgeLine1"></h2>
-            <h2 class="typing-line intro-title" aria-hidden="true" id="bridgeLine2"></h2>
+            <h2 class="typing-line intro-title" aria-hidden="true" id="buildersLine2"></h2>
+          </div>
+        </section>
+
+        <section id="introLeadin" class="intro-screen" aria-label="Lead in intro">
+          <div class="intro-block">
+            <h2 class="typing-line intro-title" aria-hidden="true" id="leadinLine1"></h2>
           </div>
         </section>
 
@@ -98,8 +102,18 @@
           </button>
         </div>
         <nav id="mobileMenu" class="mobile-menu" aria-label="Mobile navigation">
-          <a class="mobile-menu-link" href="#spotlight">Home</a>
-          <span class="mobile-menu-link is-disabled" aria-disabled="true">Hall of Fame (Coming soon)</span>
+          <div class="mobile-menu-top">
+            <span class="mobile-menu-title">Menu</span>
+            <button id="menuCloseBtn" class="menu-close-btn" type="button" aria-label="Close menu">×</button>
+          </div>
+          <div class="mobile-menu-main">
+            <a class="mobile-menu-link" href="#spotlight">Home</a>
+            <span class="mobile-menu-link is-disabled" aria-disabled="true">Archive</span>
+          </div>
+          <div class="mobile-menu-actions">
+            <a class="menu-action-btn menu-action-secondary" href="#">Login</a>
+            <a class="menu-action-btn menu-action-primary" href="#">Sign Up</a>
+          </div>
         </nav>
         <div id="menuBackdrop" class="menu-backdrop" aria-hidden="true"></div>
       </header>
