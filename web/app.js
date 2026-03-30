@@ -116,6 +116,36 @@ function typeText(target, text, speedMs = 40) {
   });
 }
 
+function playCountVideo(videoElement) {
+  if (!videoElement) return Promise.resolve();
+
+  return new Promise((resolve) => {
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      videoElement.removeEventListener("ended", finish);
+      videoElement.removeEventListener("error", finish);
+      resolve();
+    };
+
+    videoElement.currentTime = 0;
+    videoElement.addEventListener("ended", finish);
+    videoElement.addEventListener("error", finish);
+
+    const playPromise = videoElement.play();
+    if (playPromise && typeof playPromise.catch === "function") {
+      playPromise.catch(() => finish());
+    }
+
+    // Fallback so intro does not hang if metadata is missing.
+    const fallbackMs = Number.isFinite(videoElement.duration) && videoElement.duration > 0
+      ? Math.ceil(videoElement.duration * 1000) + 400
+      : 2800;
+    window.setTimeout(finish, fallbackMs);
+  });
+}
+
 async function runProjectSplashSequence() {
   const projectSplash = document.getElementById("projectSplash");
   const siteContent = document.getElementById("siteContent");
@@ -128,7 +158,8 @@ async function runProjectSplashSequence() {
   const buildersLine2 = document.getElementById("buildersLine2");
   const bridgeLine1 = document.getElementById("bridgeLine1");
   const bridgeLine2 = document.getElementById("bridgeLine2");
-  const projectCountdown = document.getElementById("projectCountdown");
+  const projectCountVideoWrap = document.getElementById("projectCountVideoWrap");
+  const projectCountVideo = document.getElementById("projectCountVideo");
   const projectNameSplash = document.getElementById("projectNameSplash");
 
   showProjectSplashStep(0);
@@ -170,17 +201,9 @@ async function runProjectSplashSequence() {
   showProjectSplashStep(3);
 
   if (projectNameSplash) projectNameSplash.classList.remove("is-visible");
-  if (projectCountdown) {
-    projectCountdown.textContent = "3..";
-    projectCountdown.style.display = "block";
-  }
-
-  for (let i = 3; i >= 1; i -= 1) {
-    if (projectCountdown) projectCountdown.textContent = `${i}..`;
-    await wait(420);
-  }
-
-  if (projectCountdown) projectCountdown.style.display = "none";
+  if (projectCountVideoWrap) projectCountVideoWrap.style.display = "block";
+  await playCountVideo(projectCountVideo);
+  if (projectCountVideoWrap) projectCountVideoWrap.style.display = "none";
   if (projectNameSplash) projectNameSplash.classList.add("is-visible");
 
   await wait(INTRO_STEP_3_MS);

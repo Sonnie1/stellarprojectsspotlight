@@ -291,33 +291,44 @@ body {
   background: #ffffff;
 }
 
-.intro-countdown {
+.intro-count-video-wrap {
   margin: 0 auto;
-  width: 108px;
-  height: 108px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--accent);
-  border-radius: 999px;
-  background: #f8ffff;
-  color: #000000;
-  font-size: 46px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1;
-  box-shadow: 0 8px 22px rgba(31, 167, 168, 0.16);
+  width: min(240px, 58vw);
+  border: 1px solid #000000;
+  border-radius: 18px;
+  background: #ffffff;
+  overflow: hidden;
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.1);
+}
+
+.intro-count-video {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 .intro-project-name {
+  margin-top: 16px;
   opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 320ms ease, transform 320ms ease;
+  transform: translateY(10px) scale(0.96);
+  transition: opacity 420ms ease, transform 420ms ease;
 }
 
 .intro-project-name.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
+  animation: projectNameRise 640ms ease both;
+}
+
+@keyframes projectNameRise {
+  0% {
+    letter-spacing: -0.08em;
+    filter: blur(2px);
+  }
+  100% {
+    letter-spacing: -0.03em;
+    filter: blur(0);
+  }
 }
 
 .typing-line {
