@@ -197,6 +197,8 @@ body.menu-open {
   transition: transform 260ms ease, opacity 180ms ease, visibility 0s linear 260ms;
   z-index: 24;
   will-change: transform;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .mobile-menu.is-open {
@@ -251,6 +253,11 @@ body.menu-open {
   flex-direction: column;
   gap: 8px;
   margin-top: auto;
+  position: sticky;
+  bottom: 0;
+  background: #ffffff;
+  padding-top: 10px;
+  padding-bottom: calc(4px + env(safe-area-inset-bottom));
 }
 
 .menu-action-btn {
@@ -260,6 +267,7 @@ body.menu-open {
   padding: 10px 12px;
   text-align: center;
   font-weight: 700;
+  width: 100%;
 }
 
 .menu-action-secondary {
